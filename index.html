@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To do list</title>
+  <script src="./script.js" defer></script>
+  <script src="https://kit.fontawesome.com/41dafec09c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Merriweather:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="container">
+
+    <main>
+      <h2 class="titles">To do list</h2>
+      <section id="new-task">
+        <label for="taskInput" ></label>
+        <input type="text" name="taskInput" id="taskInput" placeholder="to do here" maxlength="25" required>
+        <button onclick="createTask()" id="add-taskBtn">
+          <p><i class="fa-solid fa-plus"></i></button></p>
+      </section>
+  
+      <section id="all-tasks">
+        <h2 class="titles" id="all-tasks-title">Tasks</h2>
+        <ul id="task-list"></ul>
+      </section>
+    </main>
+
+  </div>
+</body>
+</html>
