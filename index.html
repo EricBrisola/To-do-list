@@ -12,22 +12,22 @@
 </head>
 <body>
   <div id="container">
-
     <main>
-      <h2 class="titles">To do list</h2>
+      <section id="top-content">
+        <h2 class="titles">To do list</h2>
+        <button type="button" class="titles" id="reload-btn">Reload tasks</button>
+      </section>
       <section id="new-task">
-        <label for="taskInput" ></label>
-        <input type="text" name="taskInput" id="taskInput" placeholder="to do here" maxlength="25" required>
-        <button onclick="createTask()" id="add-taskBtn">
+        <label for="task-input" ></label>
+        <input type="text" name="task-input" id="task-input" placeholder="to do here" maxlength="25" required>
+        <button id="add-task-btn">
           <p><i class="fa-solid fa-plus"></i></button></p>
       </section>
-  
       <section id="all-tasks">
         <h2 class="titles" id="all-tasks-title">Tasks</h2>
         <ul id="task-list"></ul>
       </section>
     </main>
-
   </div>
 </body>
 </html>
