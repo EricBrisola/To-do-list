@@ -1,104 +1,82 @@
+let allTasks = JSON.parse(localStorage.getItem("tasks")) || []
+
 const addTaskBtn = document.querySelector('#add-task-btn')
 addTaskBtn.addEventListener('click', createTask)
-
-const reloadTaskBtn = document.querySelector('#reload-btn')
-reloadTaskBtn.addEventListener('click', reloadTasks)
 
 let rowId = 0
 
 function createTask() 
 {
-    const taskInput = document.querySelector('#task-input').value
+  const taskInput = document.querySelector('#task-input').value
 
-    if(taskInput === '')
-    {
-      alert('Put some task')
-    }
-     else
-     {
-       localStorage.setItem('task' + rowId, taskInput)
-       const taskSection =  document.querySelector('#task-list')
-       const taskLine = document.createElement('li')
-       taskLine.setAttribute('id', 'row' + rowId)
+  if(taskInput === '')
+  {
+    alert('Put some task')
+  }
+   else
+   {
+     allTasks.push(taskInput)
+     localStorage.setItem("tasks", JSON.stringify(allTasks))
+     const taskSection =  document.querySelector('#task-list')
+     const taskLine = document.createElement('li')
+     taskLine.setAttribute('data', rowId)
       
-       const taskText = document.createElement('span')
-       taskText.innerText = taskInput
+     const taskText = document.createElement('span')
+     taskText.innerText = taskInput
       
-       taskSection.appendChild(taskLine)
-       taskLine.appendChild(taskText)
+     taskSection.appendChild(taskLine)
+     taskLine.appendChild(taskText)
       
-       const deleteTaskBtn = document.createElement('button')
-       deleteTaskBtn.addEventListener('click', deleteSelfTask)
-       deleteTaskBtn.setAttribute('id', 'delete-button' + rowId)
-       deleteTaskBtn.setAttribute('class', 'delete-buttons')
-       deleteTaskBtn.innerHTML = '<p><i class="fa-solid fa-trash"></i></p>'
+     const deleteTaskBtn = document.createElement('button')
+     deleteTaskBtn.addEventListener('click', deleteSelfTask)
+     deleteTaskBtn.setAttribute('id', 'delete-button' + rowId)
+     deleteTaskBtn.setAttribute('class', 'delete-buttons')
+     deleteTaskBtn.innerHTML = '<p><i class="fa-solid fa-trash"></i></p>'
       
-      taskLine.appendChild(deleteTaskBtn)
+     taskLine.appendChild(deleteTaskBtn)
       
-      document.querySelector('#task-input').value = ''
-      rowId++
-     }
+     document.querySelector('#task-input').value = ''
+     rowId++
+   }
 }
 
 function deleteSelfTask(btn) 
 {
   const taskToDelete = btn.currentTarget.parentNode
   taskToDelete.remove()
-  checkLocalStorage(btn)
+
+  let index = taskToDelete.getAttribute('data')
+  allTasks.splice(index, 1)
+
+  localStorage.setItem("tasks", JSON.stringify(allTasks))
+  UpdateTasks()
 }
 
-function reloadTasks () 
-{
-  const allTasks = document.querySelectorAll('li')
+function UpdateTasks () 
+{ 
+  document.querySelector('#task-list').innerHTML = ''
 
-  if(allTasks.length > 0 && localStorage.length > 1)
+  for(let i = 0;i < allTasks.length; i++)
   {
-    alert ('Cant reload due to duplication of tasks')
-  }
-   else if(localStorage.length < 1)
-   {
-     alert('No tasks to reload')
-   }
-   else
-   {
-     for(let i = 0;i < localStorage.length; i++)
-     {
-       const taskSection = document.querySelector('#task-list')
-       const oldTaskLine = document.createElement('li')
-       const oldTaskText = document.createElement('span')
-       const oldDeleteTaskBtn = document.createElement('button')
+    const taskSection = document.querySelector('#task-list')
+    const oldTaskLine = document.createElement('li')
+    const oldTaskText = document.createElement('span')
+    const oldDeleteTaskBtn = document.createElement('button')
 
-       oldTaskLine.setAttribute('id', 'row' + i)
-       oldTaskText.innerText = localStorage.getItem('task' + i)
+    oldTaskLine.setAttribute('data', i)
+    oldTaskText.innerText = allTasks[i] 
 
-       taskSection.appendChild(oldTaskLine)
-       oldTaskLine.appendChild(oldTaskText)
+    taskSection.appendChild(oldTaskLine)
+    oldTaskLine.appendChild(oldTaskText)
 
-       oldDeleteTaskBtn.addEventListener('click', deleteSelfTask)
-       oldDeleteTaskBtn.setAttribute('id', 'delete-button' + i)
-       oldDeleteTaskBtn.setAttribute('class', 'delete-buttons')
-       oldDeleteTaskBtn.innerHTML = '<p><i class="fa-solid fa-trash"></i></p>'
+    oldDeleteTaskBtn.addEventListener('click', deleteSelfTask)
+    oldDeleteTaskBtn.setAttribute('id', 'delete-button' + i)
+    oldDeleteTaskBtn.setAttribute('class', 'delete-buttons')
+    oldDeleteTaskBtn.innerHTML = '<p><i class="fa-solid fa-trash"></i></p>'
           
-       oldTaskLine.appendChild(oldDeleteTaskBtn)     
-      }
-     localStorage.clear()
-   }
-   rowId = 0
+    oldTaskLine.appendChild(oldDeleteTaskBtn)     
+  }
+  rowId = allTasks.length
 }
 
-function checkLocalStorage ()
-{
-  let taskList = document.querySelectorAll('li')
-  
-
-  for(let j = 0; j < taskList.length; j++)
-  {
-    if(taskList[j].innerText != localStorage.getItem('task' + j))
-     {
-      console.log(taskList[j].innerText)
-      localStorage.removeItem('task' + j)
-      break
-     }
-  }  
-}
-
+UpdateTasks()
