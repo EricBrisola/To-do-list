@@ -2,6 +2,7 @@ let allTasks = JSON.parse(localStorage.getItem("tasks")) || []
 
 const addTaskBtn = document.querySelector('#add-task-btn')
 addTaskBtn.addEventListener('click', createTask)
+document.querySelector('#task-input').addEventListener('keydown', enterToAddTask)
 
 let rowId = 0
 
@@ -77,6 +78,14 @@ function UpdateTasks ()
     oldTaskLine.appendChild(oldDeleteTaskBtn)     
   }
   rowId = allTasks.length
+}
+
+function enterToAddTask (btn)
+{
+  if(btn.key === 'Enter')
+  {
+    createTask()
+  }
 }
 
 UpdateTasks()
